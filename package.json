@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "express": "^4.18.0",
+    "sqlite3": "^5.0.5"
+  },
+  "name": "nsi-projet-snake",
+  "version": "1.0.0",
+  "description": "Projet final de NSI",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "init": "node init.js"
+  },
+  "author": "Antoine Souben-Fink, Théo Launay, Tiphaine Bertone",
+  "license": "ISC"
+}

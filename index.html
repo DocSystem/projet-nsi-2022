@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SNAKE - Projet Final NSI</title>
+        <link rel="stylesheet" href="/assets/css/master.css">
+        <link rel="shortcut icon" href="/assets/img/seguin.jpg" type="image/jpg">
+        <meta name="og:title" content="SNAKE - Projet Final NSI">
+        <meta name="og:type" content="website">
+        <meta name="og:url" content="nsi.docsystem.xyz">
+        <meta name="og:image" content="https://nsi.docsystem.xyz/assets/img/seguin.jpg">
+        <meta name="og:description" content="Jeu de Snake développé par Antoine Souben-Fink, Théo Launay et Tiphaine Bertone">
+        <meta name="theme-color" content="#18112f">
+    </head>
+    <body>
+        <div class="gameOverContainer hidden">
+            <div id="gameOver">
+                <h1>GAME OVER</h1>
+                <h2>SCORE : <span id="final_score"></span></h2>
+                <input type="text" id="final_name" name="final_name" placeholder="Votre nom"><br>
+                <button id="final_save">SAUVEGARDER</button><br>
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank"><button>PLUS D'INFOS</button></a>
+            </div>
+        </div>
+        <div class="container">
+            <header>
+                <h1>Jeu du Snake</h1>
+                <h2>Projet NSI</h2>
+            </header>
+            <div style="flex-basis: 20%; height: 100%; background: url(/assets/img/seguin.jpg); background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
+            <div class="snake_game">
+                <div id="menu">
+                    <p>Difficulté : <button onclick="setDifficulty('easy')" id="diff_easy" active>Facile</button> <button onclick="setDifficulty('hard')" id="diff_hard">Difficile</button></p>
+                </div>
+                <canvas id="snake" width="608" height="608"></canvas>
+            </div>
+            <div class="scores_container">
+                <h1>Scores</h1>
+                <ul id="snake_scores"></ul>
+            </div>
+            <footer>
+                <img style="height: 20px;" src="https://c.tenor.com/VFFJ8Ei3C2IAAAAM/rickroll-rick.gif">
+                Fait par Antoine SOUBEN-FINK, Théo LAUNAY et Tiphaine BERTONE
+                <img style="height: 20px;" src="https://c.tenor.com/VFFJ8Ei3C2IAAAAM/rickroll-rick.gif">
+            </footer>
+        </div>
+        <script src="/assets/js/app.js"></script>
+        <script src="/assets/js/snake.js"></script>
+    </body>
+</html>
