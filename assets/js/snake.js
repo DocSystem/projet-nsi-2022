@@ -5,31 +5,31 @@ const ctx = cvs.getContext("2d");
 const box = 32;
 
 // on crée les images de fond et de nourriture
-const ground = new Image();
-ground.src = "/assets/img/fond.png";
+const imageFond = new Image();
+imageFond.src = "/assets/img/fond.png";
 
-const foodImg = new Image();
-foodImg.src = "/assets/img/food.png";
+const imageNourriture = new Image();
+imageNourriture.src = "/assets/img/food.png";
 
-const food2Img = new Image();
-food2Img.src = "/assets/img/food2.png";
+const imageNourriture2 = new Image();
+imageNourriture2.src = "/assets/img/food2.png";
 
-const headImg = new Image();
-headImg.src ="/assets/img/head.png";
+const imageTeteSerpent = new Image();
+imageTeteSerpent.src ="/assets/img/head.png";
 
-const nourritures = [foodImg, food2Img];
+const nourritures = [imageNourriture, imageNourriture2];
 
 // variable du serpent
-let snake = [];
+let serpent = creerPile();
 
 // position de départ
-snake[0] = {
+empiler(serpent, {
     x : 9 * box,
     y : 10 * box
-};
+});
 
 // générer aléatoirement la position de la nourriture
-let food = {
+let nourriture = {
     x : Math.floor(Math.random()*17+1) * box,
     y : Math.floor(Math.random()*15+3) * box
 }
@@ -56,82 +56,86 @@ function direction(event){
     }
 }
 
-function collision(head,array) {
-    // vérifie si le serpent se mord lui meme
-    for(let i = 0; i < array.length; i++){
-        if(head.x == array[i].x && head.y == array[i].y){
+function collision(teteSerpent, pile) {
+    let pileTemp = copierPile(pile);
+    let element = null;
+    while (pileEstVide(pileTemp) !== true) {
+        element = depiler(pileTemp);
+        if(teteSerpent.x == element.x && teteSerpent.y == element.y){
             return true;
         }
-    }
-    return false;
+    };
 }
 
 const couleurs = ["black", "#3498db", "pink", "orange"];
 let couleurAleatoire = "black";
-let nourritureAleatoire = foodImg;
+let nourritureAleatoire = imageNourriture;
 
-function draw(){
+function dessiner(){
     // dessine le canevas
-    ctx.drawImage(ground,0,0);
+    ctx.drawImage(imageFond,0,0);
     
     // dessine chaque bloc du serpent
-    for( let i = 0; i < snake.length ; i++){
+    for (let i = 0; i < serpent.length ; i++){
         if (i==0) {
-            ctx.drawImage(headImg, snake[i].x, snake[i].y);
+            ctx.drawImage(imageTeteSerpent, serpent[i].x, serpent[i].y);
         } else {
         ctx.fillStyle = couleurAleatoire;
-        ctx.fillRect(snake[i].x,snake[i].y,box,box);
+        ctx.fillRect(serpent[i].x,serpent[i].y,box,box);
         
         ctx.strokeStyle = "grey";
-        ctx.strokeRect(snake[i].x,snake[i].y,box,box);
+        ctx.strokeRect(serpent[i].x,serpent[i].y,box,box);
         }
     }
     // dessine le bloc de nourriture
-    ctx.drawImage(nourritureAleatoire, food.x, food.y);
+    ctx.drawImage(nourritureAleatoire, nourriture.x, nourriture.y);
     
-    // position de l'ancienne tête du serpent
-    let snakeX = snake[0].x;
-    let snakeY = snake[0].y;
+    // position de l'ancienne tête du serpent (queue de pile)
+    let posAncienneTete = retournerQueue(serpent);
+    let serpentX = posAncienneTete.x;
+    let serpentY = posAncienneTete.y;
     
     // direction du serpent
-    if( d == "LEFT") snakeX -= box;
-    if( d == "UP") snakeY -= box;
-    if( d == "RIGHT") snakeX += box;
-    if( d == "DOWN") snakeY += box;
+    if( d == "LEFT") serpentX -= box;
+    if( d == "UP") serpentY -= box;
+    if( d == "RIGHT") serpentX += box;
+    if( d == "DOWN") serpentY += box;
     
     // si le serpent mange la nourriture
-    if(snakeX == food.x && snakeY == food.y){
+    if(serpentX == nourriture.x && serpentY == nourriture.y){
         couleurAleatoire = couleurs[Math.floor(Math.random() * couleurs.length)];
         nourritureAleatoire = nourritures[Math.floor(Math.random() * nourritures.length)];
         score++;
-        food = {
+        nourriture = {
             x : Math.floor(Math.random()*17+1) * box,
             y : Math.floor(Math.random()*15+3) * box
         }
     }
-    // on retire la queue du serpent (dernier élément dans la liste)
+    // on retire la queue du serpent (sommet de pile)
     else {
-        snake.pop();
+        depiler(serpent);
     }
     
-    let newHead = {
-        x : snakeX,
-        y : snakeY
+    let nouvelleTeteSerpent = {
+        x : serpentX,
+        y : serpentY
     }
     
     // si le serpent touche un bord ou si on sait que le serpent se mord lui-meme, on arrete le jeu
-    if(snakeX < box || snakeX > 17 * box || snakeY < 3*box || snakeY > 17*box || collision(newHead,snake)){
+    if(serpentX < box || serpentX > 17 * box || serpentY < 3*box || serpentY > 17*box || collision(nouvelleTeteSerpent,serpent)){
         gameEnd();
         return;
     }
     
-    snake.unshift(newHead);
+    // on insere les coordonnées de la nouvelle tête de serpent (bas de pile)
+    serpent = insererQueue(serpent, nouvelleTeteSerpent);
     
     // écrire le score dans le canevas
     ctx.fillStyle = "white";
     ctx.font = "40px Calibri";
     ctx.fillText(score, 4*box,1.5*box);
-    setTimeout(draw, vitesse);
+    // rappeler la fonction qui gère le canevas
+    setTimeout(dessiner, vitesse);
 }
 
-draw();
+dessiner();
