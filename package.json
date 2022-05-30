@@ -12,6 +12,13 @@
     "start": "node .",
     "init": "node init.js"
   },
-  "author": "Antoine Souben-Fink, Théo Launay, Tiphaine Bertone",
+  "pkg": {
+    "assets": [
+      "index.html",
+      "assets/**/*",
+      "scores.db"
+    ]
+  },
+  "author": "Antoine Souben-Fink, Théo Launay",
   "license": "ISC"
 }
