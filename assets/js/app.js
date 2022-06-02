@@ -1,7 +1,7 @@
 let scores = [];
 let oldScores = [];
 let difficulty = "easy";
-let vitesse = 150;
+let vitesse = 250;
 
 async function getScores() {
     const response = await fetch('/api/getScores');
